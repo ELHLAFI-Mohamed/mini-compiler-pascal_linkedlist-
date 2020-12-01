@@ -61,7 +61,7 @@ case 36: return "GUIMF_TOKEN";break;
 
 void  Stockage(){
 	
-	TOK_A=(struct code*)malloc(sizeof(struct code));
+//	TOK_A=(struct code*)malloc(sizeof(struct code));
 
 struct store * new_elem =(struct store *)malloc(sizeof(struct store));
 
@@ -590,18 +590,19 @@ Car_Cour=fgetc(file);
 }
 
 void opn_file(char *filename){
-	
+	TOK_A=(struct code*)malloc(sizeof(struct code));
  
 	file=fopen(filename,"a+");
 	read_car();
 	while(Car_Cour!=EOF){
-		TOK_A=(struct code*)malloc(sizeof(struct code));
+		
 		analyse();
 		read_car();
-		free(TOK_A);
+		
 
 		
 	}
+	free(TOK_A);
 	 
 
 	
