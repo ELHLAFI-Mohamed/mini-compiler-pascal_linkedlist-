@@ -53,7 +53,7 @@ case 34: return "SPACE_TOKEN";break;
 case 35: return "NEWLINE_TOKEN,";break;
 case 36: return "GUIMF_TOKEN";break;
  default:
-            printf("Error! operator is not correct");
+            return" err";
 }
 }
  
@@ -61,33 +61,38 @@ case 36: return "GUIMF_TOKEN";break;
 
 void  Stockage(){
 	
-//	TOK_A=(struct code*)malloc(sizeof(struct code));
+	
 
-struct store * new_elem =(struct store *)malloc(sizeof(struct store));
+struct store * new_elem =NULL;
+new_elem=(struct store *)malloc(sizeof(struct store));
 
-struct store    *last ;
-last = head;
+
 
 new_elem->data=TOK_A;
 new_elem->next=NULL;
+
 if(head==NULL){// if the linked list is empty 
 	
-
+TOK_A=(struct code*)malloc(sizeof(struct code));
 head=new_elem; 
-//printf("(%s)\n",trans(&((*head)->data->token)) );
-return ;
 
 }
+else{
+	TOK_A=(struct code*)malloc(sizeof(struct code));
+
+struct store    *last=head;
   
 while(last->next!=NULL){
 
 
 last=last->next;
 
+
 }
 
 
  last->next=new_elem;
+}
 
 
 
@@ -101,24 +106,12 @@ last=last->next;
 
 
 
-void printList() 
-
-{ 
-  while (head != NULL) 
-  { 
-
-
-    printf("%s\n ",trans(&(head->data->token))); 
-    
-     head = head->next; 
-  } 
-}
-
 
 
 
 
 void analyse(){
+
 	
 
 	if((Car_Cour>='a'&& Car_Cour<='z' )|| (Car_Cour>='A'&& Car_Cour<='Z')){
@@ -428,7 +421,7 @@ if(Car_Cour==45){
  if(Car_Cour==44){
 
  	
-
+TOK_A=(struct code*)malloc(sizeof(struct code));
 		TOK_A->token=VIR_TOKEN;
 	Stockage();
 	
@@ -437,7 +430,7 @@ if(Car_Cour==45){
 }
 
  if(Car_Cour==58){
-	char c=Car_Cour;
+	
 	read_car();
 	if(Car_Cour==61){
 		
@@ -505,7 +498,7 @@ else{
 
 
  if(Car_Cour==62){
-	char c=Car_Cour;
+	
 	read_car();
 	if(Car_Cour==61){
 		
@@ -590,25 +583,39 @@ Car_Cour=fgetc(file);
 }
 
 void opn_file(char *filename){
-	TOK_A=(struct code*)malloc(sizeof(struct code));
+	
  
 	file=fopen(filename,"a+");
 	read_car();
 	while(Car_Cour!=EOF){
-		
+		TOK_A=(struct code*)malloc(sizeof(struct code));
 		analyse();
-		read_car();
 		
+		read_car();
+		//printf("%s\n ",trans(&(head->data->token)));
+		
+		free(TOK_A);
 
 		
 	}
-	free(TOK_A);
-	 
 
+	 
+//printf("%s\n ",trans(&(head->data->token)));
 	
 
 	
 }
 
+void printList() 
 
+{ 
+  while (head != NULL) 
+  { 
+
+
+    printf("%s\n ",trans(&(head->data->token))); 
+    
+     head = head->next; 
+  } 
+}
 
