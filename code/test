@@ -1,4 +1,4 @@
-program	test11;
+program test11;
 const toto=21; titi=13;
 var x,y;
 Begin

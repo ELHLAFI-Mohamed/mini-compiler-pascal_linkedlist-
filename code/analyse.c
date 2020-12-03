@@ -47,11 +47,10 @@ case 28: return "ID_TOKEN";break;
 case 29: return "NUM_TOKEN";break;
 case 30: return "ERREUR_TOKEN";break;
 case 31: return "NULL_TOKEN";break;
-case 32: return "COMMENT_TOKEN";break;
-case 33: return "GUIMO_TOKEN";break;
-case 34: return "SPACE_TOKEN";break;
-case 35: return "NEWLINE_TOKEN,";break;
-case 36: return "GUIMF_TOKEN";break;
+
+case 32: return "GUIMO_TOKEN";break;
+
+case 33: return "GUIMF_TOKEN";break;
  default:
             return" err";
 }
@@ -250,8 +249,7 @@ while(r==0 && Car_Cour!=EOF){
 }
 if(r==1) {
          
-        TOK_A->token=COMMENT_TOKEN;
-         Stockage();
+        
          
 
 
@@ -546,28 +544,8 @@ if(Car_Cour==41){
 
 }
 
- if(Car_Cour==32){
+ 
 
- 	
-
-		TOK_A->token=SPACE_TOKEN;
-	Stockage();
-	
-
-	//printf("%c -> SPACE_TOKEN\n",Car_Cour);
-
-}
-
-if(Car_Cour==10){
-	
-
-		TOK_A->token=NEWLINE_TOKEN;
-	Stockage();
-	
-
-	//printf("%c ->NEWLINE_TOKEN\n",Car_Cour);
-
-}
 
 
 
@@ -609,13 +587,16 @@ void opn_file(char *filename){
 void printList() 
 
 { 
-  while (head != NULL) 
+	struct store * printlis=head;
+
+
+  while (printlis != NULL) 
   { 
 
 
-    printf("%s\n ",trans(&(head->data->token))); 
+    printf("%s\n ",trans(&(printlis->data->token))); 
     
-     head = head->next; 
+     printlis = printlis->next; 
   } 
 }
 
