@@ -12,6 +12,9 @@ int main(int argc,char *argv[]) {
   printList();
   printf("**************************FIN D'ANALYSE LEXICALE ***************************************\n ");
  PROGRAM();
- 
+ if(syntax==0){
+ 	printf("*************compilation succeed***************************** !!!\n");
+ }
+ else printf("**********************syntax error !!!************************************ ");
 
 }

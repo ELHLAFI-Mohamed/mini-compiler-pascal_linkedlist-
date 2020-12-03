@@ -29,3 +29,5 @@ void COND();
 void TANTQUE();
 void LIRE();
 void ECRIRE();
+
+int syntax ;

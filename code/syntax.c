@@ -15,7 +15,9 @@ head=head->next ;
 
 
 void Erreur(enum ERREURS erreur){
+  printf("%s\n ",trans(&(head->data->token))); 
 	switch(erreur){
+
 
 case 0: printf("ERREUR----->PROGRAM\n");break;
 case 1: printf("ERREUR----->CONST_ERREUR\n");break;
@@ -55,6 +57,7 @@ void Test_Symbole(enum TOKENS stoken,enum ERREURS erreur) {
 	
 
   if((head->data->token==stoken)) {
+    
   	
     Symbole_Suiv();
     
@@ -62,7 +65,7 @@ void Test_Symbole(enum TOKENS stoken,enum ERREURS erreur) {
 
   else {
   	
-  	
+  	syntax=1;
     Erreur(erreur);
   }
 }
@@ -73,7 +76,7 @@ void PROGRAM() {
   Test_Symbole(ID_TOKEN,ID_ERREUR);
   Test_Symbole(PV_TOKEN,PV_ERREUR);
   BLOCK();
-  //Test_Symbole(PT_TOKEN,PT_ERREUR);
+  Test_Symbole(PT_TOKEN,PT_ERREUR);
 }
 
 
@@ -93,15 +96,18 @@ void CONSTS() {
                        Test_Symbole(EG_TOKEN,EG_ERREUR);
                        Test_Symbole(NUM_TOKEN,NUM_ERREUR);
                        Test_Symbole(PV_TOKEN,PV_ERREUR);
-                       
+                      
                        while( head->data->token== ID_TOKEN) {
+
+                           
                          
                          Test_Symbole(ID_TOKEN,ID_ERREUR);
                          Test_Symbole(EG_TOKEN,EG_ERREUR);
                          Test_Symbole(NUM_TOKEN,NUM_ERREUR);
                          Test_Symbole(PV_TOKEN,PV_ERREUR);
-                         Symbole_Suiv();
-                         
+                             
+            
+                        
 
                        } ; break ;
     case VAR_TOKEN : ;  break ;
@@ -114,9 +120,9 @@ void CONSTS() {
 
 
  void VARS() {
- 	
   switch (head->data->token) {
     case VAR_TOKEN : Symbole_Suiv();
+
                      Test_Symbole(ID_TOKEN,ID_ERREUR);
                      
                      while(head->data->token== VIR_TOKEN) {
@@ -154,6 +160,7 @@ void INST() {
     case WHILE_TOKEN : TANTQUE();break ;
     case WRITE_TOKEN : ECRIRE(); break ;
     case READ_TOKEN  : LIRE()  ; break ;
+    case END_TOKEN:    ;break;
     default          : Erreur(INST_ERR) ; break ;
 }
 }
@@ -164,13 +171,15 @@ void AFFEC() {
   Test_Symbole(AFF_TOKEN,AFF_ERREUR);
   
   EXPR();
+  
 }
 
 void EXPR() {
 	
   TERM();
-  
+
   while(head->data->token== PLUS_TOKEN || head->data->token== MOINS_TOKEN) {
+  
     Symbole_Suiv();
     TERM();
   }
@@ -189,8 +198,11 @@ void FACT() {
 	
   switch(head->data->token) {
   	
-    case ID_TOKEN : break ;
-    case PO_TOKEN : EXPR(); Test_Symbole(PF_TOKEN,PF_ERREUR); break ;
+    case ID_TOKEN :Symbole_Suiv(); break ;
+    case PO_TOKEN : EXPR(); Test_Symbole(PF_TOKEN,PF_ERREUR);
+                           
+     break ;
+     default: ;break;
   }
 }
 
@@ -205,14 +217,15 @@ void SI() {
 void COND() {
 	
   EXPR();
+ 
   
   switch(head->data->token) {
-    case EG_TOKEN: break;
-    case DIFF_TOKEN: break;
-    case INF_TOKEN:  break;
-    case SUP_TOKEN:  break;
-    case INFEG_TOKEN:break;
-    case SUPEG_TOKEN:break;
+    case EG_TOKEN: Symbole_Suiv();EXPR();Symbole_Suiv();;break;
+    case DIFF_TOKEN: Symbole_Suiv();EXPR();Symbole_Suiv();;break;
+    case INF_TOKEN:EXPR();Symbole_Suiv()  ;break;
+    case SUP_TOKEN: EXPR();Symbole_Suiv() ;break;
+    case INFEG_TOKEN:Symbole_Suiv();EXPR();Symbole_Suiv();;break;
+    case SUPEG_TOKEN:Symbole_Suiv();EXPR();Symbole_Suiv();;break;
     default: Erreur(COND_ERR) ; break ;
   }
   EXPR();
@@ -223,8 +236,11 @@ void TANTQUE() {
   Test_Symbole(WHILE_TOKEN,WHILE_ERREUR);
   COND();
   Test_Symbole(DO_TOKEN,DO_ERREUR);
-  INST();
-  Test_Symbole(END_TOKEN,END_ERREUR);
+  if(head->data->token==BEGIN_TOKEN){
+    INSTS();
+  }
+  else INST();
+  
 
 }
 
@@ -260,7 +276,6 @@ void LIRE() {
   Test_Symbole(PF_TOKEN,PF_ERREUR);
   
 }
-
 
 
 

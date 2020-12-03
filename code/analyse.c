@@ -28,7 +28,7 @@ case 9: return "READ_TOKEN";break;
 case 10: return "WRITE_TOKEN,";break;
 case 11: return "PV_TOKEN";break;
 case 12: return "PT_TOKEN";break;
-case 13: return "PPLUS_TOKEN";break;
+case 13: return "PLUS_TOKEN";break;
 case 14: return "MOINS_TOKEN";break;
 case 15: return "PMULT_TOKEN";break;
 case 16: return "DIV_TOKEN";break;
@@ -185,7 +185,7 @@ else if(strcmp(word,"while")==0){
 
 	//printf("%s -> WHILE_TOKEN\n",word);
 }
-else if(strcmp(word,"DO")==0){
+else if(strcmp(word,"do")==0){
 
 
 	TOK_A->token=DO_TOKEN;
