@@ -15,7 +15,7 @@ head=head->next ;
 
 
 void Erreur(enum ERREURS erreur){
-  printf("%s\n ",trans(&(head->data->token))); 
+  printf("%s\n ",head->data->nom); 
 	switch(erreur){
 
 
@@ -74,6 +74,7 @@ void Test_Symbole(enum TOKENS stoken,enum ERREURS erreur) {
 void PROGRAM() {
   Test_Symbole(PROGRAM_TOKEN,PROGRAM_ERREUR);
   Test_Symbole(ID_TOKEN,ID_ERREUR);
+  NbrIDFS++;
   Test_Symbole(PV_TOKEN,PV_ERREUR);
   BLOCK();
   Test_Symbole(PT_TOKEN,PT_ERREUR);
@@ -93,6 +94,7 @@ void CONSTS() {
     case CONST_TOKEN : Symbole_Suiv();
    
                        Test_Symbole(ID_TOKEN,ID_ERREUR);
+                       NbrIDFS++;
                        Test_Symbole(EG_TOKEN,EG_ERREUR);
                        Test_Symbole(NUM_TOKEN,NUM_ERREUR);
                        Test_Symbole(PV_TOKEN,PV_ERREUR);
@@ -102,17 +104,23 @@ void CONSTS() {
                            
                          
                          Test_Symbole(ID_TOKEN,ID_ERREUR);
+                         NbrIDFS++;
                          Test_Symbole(EG_TOKEN,EG_ERREUR);
                          Test_Symbole(NUM_TOKEN,NUM_ERREUR);
                          Test_Symbole(PV_TOKEN,PV_ERREUR);
-                             
+
+
             
                         
 
-                       } ; break ;
+                       } if(head->data->token==CONST_TOKEN){
+                          CONSTS();
+                         };
+
+                           ;break ;
     case VAR_TOKEN : ;  break ;
     case BEGIN_TOKEN :  ;break ;
-    default          : Erreur(CONST_VAR_BEGIN_ERR) ;
+    default          :;
   
      break ;
   }
@@ -124,23 +132,44 @@ void CONSTS() {
     case VAR_TOKEN : Symbole_Suiv();
 
                      Test_Symbole(ID_TOKEN,ID_ERREUR);
-                     
-                     while(head->data->token== VIR_TOKEN) {
-                     	
+                     NbrIDFS++;
+                     while(head->data->token== VIR_TOKEN || head->data->token==PV_TOKEN) {
+                     	if(head->data->token==VIR_TOKEN){
                         Symbole_Suiv();
                         Test_Symbole(ID_TOKEN,ID_ERREUR);
+                        NbrIDFS++;
+                      }
+                      if(head->data->token==PV_TOKEN){
+                        Symbole_Suiv();
+                        if(head->data->token==ID_TOKEN){
+
+                           NbrIDFS++;
+                             Symbole_Suiv();
+                             Test_Symbole(PV_TOKEN,PV_ERREUR);
+
+                        }
+                        else break;
+                      }
                      }
-                     Test_Symbole(PV_TOKEN,PV_ERREUR);
+                    
+                     if (head->data->token==VAR_TOKEN)
+                     {
+                       VARS();
+                     }
+                     if (head->data->token==CONST_TOKEN)
+                     {
+                       CONSTS();
+                     }
                   ; break ;
     case BEGIN_TOKEN : break ;
-    default          : Erreur(CONST_VAR_BEGIN_ERR) ;
+    default          :  ;
      break ;
   }
 }
 
 
 void INSTS() {
-	
+
   Test_Symbole(BEGIN_TOKEN,BEGIN_ERREUR);
   INST();
   
@@ -155,7 +184,23 @@ void INST() {
 	
   switch (head->data->token) {
     case BEGIN_TOKEN : INSTS() ; break ;
-    case ID_TOKEN    : AFFEC() ; break ;
+    case ID_TOKEN    :Test_Symbole(ID_TOKEN,ID_ERREUR);
+
+
+    if(head->data->token==AFF_TOKEN) 
+      {
+
+        AFFEC() ;
+
+
+
+      } else {Symbole_Suiv();
+
+Test_Symbole(NUM_TOKEN,NUM_ERREUR);
+Symbole_Suiv();
+INST();
+
+      };break ;
     case IF_TOKEN    : SI()    ; break ;
     case WHILE_TOKEN : TANTQUE();break ;
     case WRITE_TOKEN : ECRIRE(); break ;
@@ -166,8 +211,10 @@ void INST() {
 }
 
 void AFFEC() {
-	
-  Test_Symbole(ID_TOKEN,ID_ERREUR);
+
+  
+  
+
   Test_Symbole(AFF_TOKEN,AFF_ERREUR);
   
   EXPR();

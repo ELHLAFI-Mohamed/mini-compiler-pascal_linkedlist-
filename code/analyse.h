@@ -17,13 +17,15 @@ enum TOKENS{
  struct code{
  
 enum TOKENS token ;
+char nom[20];
+int val ;
  
 
 }; 
 
 
 
-
+int NbrIDFS;
  
  struct store{
 

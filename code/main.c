@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "analyse.h"
 #include "syntax.h"
+#include "sementique.h"
 
 
 
@@ -13,8 +14,14 @@ int main(int argc,char *argv[]) {
   printf("**************************FIN D'ANALYSE LEXICALE ***************************************\n ");
  PROGRAM();
  if(syntax==0){
- 	printf("*************compilation succeed***************************** !!!\n");
+ 	printf("*************compilation syntax succeed***************************** !!!\n");
  }
- else printf("**********************syntax error !!!************************************ ");
+ else printf("********************** Compilation syntax error !!!************************************\n ");
+ head=head_sem ;
+ TAB_IDFS=(struct T_TAB_IDF *)malloc(sizeof(struct T_TAB_IDF)*NbrIDFS);
+
+table_id();
+affich();
+
 
 }

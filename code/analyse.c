@@ -2,10 +2,10 @@
 #include <string.h> 
 #include <stdio.h>
 #include <stdlib.h>
+#include "sementique.h"
 
 
-
-
+NbrIDFS=0;
 
 
 
@@ -126,6 +126,7 @@ while((Car_Cour>='a'&& Car_Cour<='z' )|| (Car_Cour>='A'&& Car_Cour<='Z') || (Car
 if(strcmp(word,"program")==0){
 
 	TOK_A->token=PROGRAM_TOKEN;
+	strcpy(TOK_A->nom,word);
 	Stockage();
 
 
@@ -136,6 +137,7 @@ if(strcmp(word,"program")==0){
 else if(strcmp(word,"const")==0){
 
 	TOK_A->token=CONST_TOKEN;
+	strcpy(TOK_A->nom,word);
 Stockage();
 
 
@@ -143,6 +145,7 @@ Stockage();
 }
 else if(strcmp(word,"var")==0){
      TOK_A->token=VAR_TOKEN;
+     strcpy(TOK_A->nom,word);
 	Stockage();
 
 	//printf("%s -> VAR_TOKEN\n",word);
@@ -150,6 +153,7 @@ else if(strcmp(word,"var")==0){
 else if(strcmp(word,"Begin")==0){
 
 	TOK_A->token=BEGIN_TOKEN;
+	strcpy(TOK_A->nom,word);
 	Stockage();
 //	printf("%s -> BEGIN_TOKEN\n",word);
 
@@ -157,6 +161,7 @@ else if(strcmp(word,"Begin")==0){
 else if(strcmp(word,"end")==0){
 
 	TOK_A->token=END_TOKEN;
+	strcpy(TOK_A->nom,word);
 	Stockage();
 
 
@@ -164,6 +169,7 @@ else if(strcmp(word,"end")==0){
 }
 else if(strcmp(word,"if")==0){
 		TOK_A->token=IF_TOKEN;
+		strcpy(TOK_A->nom,word);
 	Stockage();
 
 
@@ -173,6 +179,7 @@ else if(strcmp(word,"if")==0){
 else if(strcmp(word,"then")==0){
    
      TOK_A->token=THEN_TOKEN;
+     strcpy(TOK_A->nom,word);
 	Stockage();
 
 
@@ -181,6 +188,7 @@ else if(strcmp(word,"then")==0){
 else if(strcmp(word,"while")==0){
 
 	TOK_A->token=WHILE_TOKEN;
+	strcpy(TOK_A->nom,word);
 	Stockage();
 
 	//printf("%s -> WHILE_TOKEN\n",word);
@@ -189,18 +197,21 @@ else if(strcmp(word,"do")==0){
 
 
 	TOK_A->token=DO_TOKEN;
+	strcpy(TOK_A->nom,word);
 Stockage();
 	//printf("%s -> DO_TOKEN\n",word);
 }
 else if(strcmp(word,"read")==0){
 
 TOK_A->token=READ_TOKEN;
+strcpy(TOK_A->nom,word);
 Stockage();
 
 	//printf("%s -> RED_TOKEN\n",word);
 }
 else if(strcmp(word,"write")==0){
        	TOK_A->token=WRITE_TOKEN;
+       	strcpy(TOK_A->nom,word);
 Stockage();
 
 
@@ -209,6 +220,8 @@ Stockage();
 else 
 {
 	TOK_A->token=ID_TOKEN;
+	strcpy(TOK_A->nom,word);
+	
 	Stockage();
 //printf("%s -> ID_TOKEN\n",word);
 
@@ -307,12 +320,18 @@ Stockage();
 
 
    if((Car_Cour>='0' && Car_Cour<='9')){
-  
+   	int i=0;
+  TOK_A->nom[i]=Car_Cour;
+  i=1;
 	read_car();
 	while((Car_Cour>='0' && Car_Cour<='9')){
 		
+		TOK_A->nom[i]=Car_Cour;
+		
+		i++;
 		read_car();
 	}
+	TOK_A->nom[i]='\0';
 	if((Car_Cour>='a' && Car_Cour<='z') && (Car_Cour>='A' ||Car_Cour<='Z') ){
 		
 
@@ -329,7 +348,7 @@ TOK_A->token=ERREUR_TOKEN;
 	else {
 
 
-		
+		TOK_A->val=atoi(TOK_A->nom);
 	TOK_A->token=NUM_TOKEN;
        Stockage();
      
@@ -348,6 +367,7 @@ TOK_A->token=ERREUR_TOKEN;
 
 
 	TOK_A->token=EG_TOKEN;
+	strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 
@@ -359,6 +379,7 @@ if(Car_Cour==59){
 
 
 	TOK_A->token=PV_TOKEN;
+	strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 
@@ -370,6 +391,7 @@ if(Car_Cour==46){
 
 
 		TOK_A->token=PT_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 	//printf("%c -> PT_TOKEN\n",Car_Cour);
@@ -379,6 +401,7 @@ if(Car_Cour==46){
 
 
 	TOK_A->token=PLUS_TOKEN;
+	strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 
@@ -392,6 +415,7 @@ if(Car_Cour==45){
 	
 
 		TOK_A->token=MOINS_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 	//printf("%c -> MOINS_TOKEN\n",Car_Cour);
@@ -402,6 +426,7 @@ if(Car_Cour==45){
 
 
 		TOK_A->token=MULT_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 
@@ -412,6 +437,7 @@ if(Car_Cour==45){
  	
 
 		TOK_A->token=DIV_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 	//printf("%c -> DIV_TOKEN\n",Car_Cour);
@@ -419,8 +445,9 @@ if(Car_Cour==45){
  if(Car_Cour==44){
 
  	
-TOK_A=(struct code*)malloc(sizeof(struct code));
+
 		TOK_A->token=VIR_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 	//printf("%c -> VIR_TOKEN\n",Car_Cour);
@@ -431,9 +458,10 @@ TOK_A=(struct code*)malloc(sizeof(struct code));
 	
 	read_car();
 	if(Car_Cour==61){
-		
+		Car_Cour=':=';
 
 		TOK_A->token=AFF_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 	//printf(":= -> AFF_TOKEN\n");
@@ -459,9 +487,10 @@ else
 
 	read_car();
 	if(Car_Cour==61){
-     
+     Car_Cour='<=';
 
 		TOK_A->token=INFEG_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 
@@ -471,8 +500,9 @@ else
 }
 else if(Car_Cour==62){
 	
-
+Car_Cour='<>';
 		TOK_A->token=DIFF_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 
@@ -483,6 +513,7 @@ else{
 	
 
 		TOK_A->token=INF_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 
@@ -500,8 +531,9 @@ else{
 	read_car();
 	if(Car_Cour==61){
 		
-
+Car_Cour='>=';
 	TOK_A->token=SUPEG_TOKEN;
+	strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 	//printf(">= -> SUPEG_TOKEN\n");
@@ -511,6 +543,7 @@ else{
 	
 
 		TOK_A->token=SUP_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 
@@ -526,6 +559,7 @@ if(Car_Cour==40){
 	
 
 		TOK_A->token=PO_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 
 
@@ -537,6 +571,7 @@ if(Car_Cour==41){
 	
 
 		TOK_A->token=PF_TOKEN;
+		strncat(TOK_A->nom,&Car_Cour,1);
 	Stockage();
 	
 
@@ -594,9 +629,10 @@ void printList()
   { 
 
 
-    printf("%s\n ",trans(&(printlis->data->token))); 
+    printf("%s ---->%s\n ",printlis->data->nom,trans(&(printlis->data->token))); 
     
      printlis = printlis->next; 
   } 
+  head_sem =head;
 }
 
